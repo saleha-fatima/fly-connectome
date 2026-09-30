@@ -1,0 +1,35 @@
+{
+  "retrieved_at_utc": "2026-09-19T18:21:57.345795+00:00",
+  "server": "https://neuprint.janelia.org",
+  "dataset": "male-cns:v1.0",
+  "dataset_uuid": "4b2087c0fbe046bfaf0d60bc970e3e5d",
+  "dataset_last_modified": "2026-03-28 11:56:30.222612573-04:00 / 2026-06-08T01:31:39-04:00 (segment property update)",
+  "selection": "All LC4 and LPLC2 neurons with a direct ConnectsTo edge to DNp01, plus the target DNp01 neurons.",
+  "semantics": "Each connection row is one neuron-to-neuron edge; synapse_count is neuPrint ConnectsTo.weight.",
+  "counts": {
+    "neurons": 313,
+    "connections": 311,
+    "neurons_by_type": {
+      "DNp01": 2,
+      "LC4": 126,
+      "LPLC2": 185
+    },
+    "synapses": 11224
+  },
+  "queries": {
+    "neurons": "MATCH (source:Neuron)-[:ConnectsTo]->(target:Neuron)\nWHERE source.type IN [\"LC4\", \"LPLC2\"] AND target.type = \"DNp01\"\nWITH collect(DISTINCT source) + collect(DISTINCT target) AS circuit_nodes\nUNWIND circuit_nodes AS n\nRETURN DISTINCT\n  n.bodyId AS body_id,\n  n.type AS type,\n  n.instance AS instance,\n  n.somaSide AS side,\n  n.status AS status,\n  n.superclass AS superclass,\n  n.consensusNt AS consensus_neurotransmitter,\n  n.predictedNtConfidence AS neurotransmitter_confidence,\n  n.pre AS presynaptic_sites,\n  n.post AS postsynaptic_sites\nORDER BY type, instance, body_id",
+    "connections": "MATCH (source:Neuron)-[connection:ConnectsTo]->(target:Neuron)\nWHERE source.type IN [\"LC4\", \"LPLC2\"] AND target.type = \"DNp01\"\nRETURN\n  source.bodyId AS source_body_id,\n  source.type AS source_type,\n  source.instance AS source_instance,\n  target.bodyId AS target_body_id,\n  target.type AS target_type,\n  target.instance AS target_instance,\n  connection.weight AS synapse_count\nORDER BY target_body_id, source_type, source_body_id",
+    "summary": "MATCH (source:Neuron)-[connection:ConnectsTo]->(target:Neuron)\nWHERE source.type IN [\"LC4\", \"LPLC2\"] AND target.type = \"DNp01\"\nRETURN\n  source.type AS source_type,\n  source.instance AS source_instance,\n  target.bodyId AS target_body_id,\n  target.instance AS target_instance,\n  count(source) AS connected_source_neurons,\n  sum(connection.weight) AS synapse_count,\n  min(connection.weight) AS minimum_per_neuron,\n  max(connection.weight) AS maximum_per_neuron\nORDER BY target_body_id, source_type"
+  },
+  "files": {
+    "escape_neurons.csv": {
+      "sha256": "8441e19d7b9b7a0e7bd184583bb5fbe56de3459b7b845e95a3599cc732b29df9"
+    },
+    "escape_connections.csv": {
+      "sha256": "9fc6be86fcc684425640df028108f06792f3d13959b3af219c4e150becab7b84"
+    },
+    "escape_connection_summary.csv": {
+      "sha256": "bfc1602f28c19185275f94a1f2e10c3b402d3efce12f0e61b8357fe98eb1d08e"
+    }
+  }
+}

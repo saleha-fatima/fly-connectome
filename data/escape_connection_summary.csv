@@ -1,0 +1,5 @@
+source_type,source_instance,target_body_id,target_instance,connected_source_neurons,synapse_count,minimum_per_neuron,maximum_per_neuron
+LC4,LC4_R,10001,DNp01(GF)_R,55,2580,21,67
+LPLC2,LPLC2_R,10001,DNp01(GF)_R,91,2220,1,59
+LC4,LC4_L,10010,DNp01(GF)_L,71,3782,30,86
+LPLC2,LPLC2_L,10010,DNp01(GF)_L,94,2642,2,64
